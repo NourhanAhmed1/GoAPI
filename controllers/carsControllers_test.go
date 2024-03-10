@@ -102,12 +102,12 @@ func TestCarsCreate(t *testing.T) {
 	r := gin.Default()
 	r.POST("/car", CarsCreate)
 	body := []byte(`{
-		"car_name": "KIA",
-		"car_make": "sportage",
-		"car_model": 2008,
-		"car_color":"red",
-		"car_type":"Cabriolet",
-		"speed_range":200}`)
+		"name": "KIA",
+		"make": "sportage",
+		"model": 2021,
+		"color":"red",
+		"cartype":"SUV",
+		"range":220}`)
 	// Create the mock request you'd like to test. Make sure the second argument
 	req, err := http.NewRequest(http.MethodPost, "/car", bytes.NewBuffer(body))
 	if err != nil {
