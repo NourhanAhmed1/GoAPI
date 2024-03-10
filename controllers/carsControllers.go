@@ -7,23 +7,59 @@ import (
 	"github.com/NourhanAhmed1/GoApi/initializers"
 	"github.com/NourhanAhmed1/GoApi/models"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 )
 
-func CarsCreate(c *gin.Context) {
+func validateCarType(f1 validator.FieldLevel) bool {
+	ValidCarTypes := []string{"Cabriolet", "Coupe", "Sedan", "Saloon", "Van", "Mini-van", "Motor-bike", "Four-by-four", "SUV", "Roadstar", "Supercar"}
+	for _, cartype := range ValidCarTypes {
+		if f1.Field().String() == cartype {
+			return true
+		}
+	}
+	return false
+}
+func validateSpeedRange(f1 validator.FieldLevel) bool {
+	if f1.Field().Int() >= 0 && f1.Field().Int() <= 240 {
+		return true
+	}
+	return false
+}
+func validateCarModel(f1 validator.FieldLevel) bool {
+	if f1.Field().Int() >= 1886 && f1.Field().Int() <= 2025 {
+		return true
+	}
+	return false
+}
 
+var validate *validator.Validate
+
+func CarsCreate(c *gin.Context) {
+	validate = validator.New()
+	validate.RegisterValidation("valid-type", validateCarType)
+	validate.RegisterValidation("valid-model", validateCarModel)
+	validate.RegisterValidation("valid-SR", validateSpeedRange)
 	//Get data off request body
 	var reqBody struct {
-		CarName    string
-		CarMake    string
-		CarModel   int
-		CarType    string
-		CarColor   string
-		SpeedRange int
+		name       string `validate:"required"`
+		make       string `validate:"required"`
+		cartype    string `validate:"valid-type"`
+		color      string `validate:"required"`
+		speedrange int    `validate:"valid-model"`
+		model      int    `validate:"valid-SR"`
 	}
+
 	//c.BindJSON(&reqBody)
 	c.BindJSON(&reqBody)
+	errv := validate.Struct(reqBody)
+	if errv != nil {
+		// Validation failed, handle the error
+		//errors := errv.(validator.ValidationErrors)
+		c.JSON(http.StatusBadRequest, gin.H{"Validation error": errv})
+		return
+	}
 	//Create a Car
-	car := models.Car{CarName: reqBody.CarName, CarModel: reqBody.CarModel, CarMake: reqBody.CarMake, CarType: reqBody.CarType, CarColor: reqBody.CarColor, SpeedRange: reqBody.SpeedRange}
+	car := models.Car{CarName: reqBody.name, CarModel: reqBody.model, CarMake: reqBody.make, CarType: reqBody.cartype, CarColor: reqBody.color, SpeedRange: reqBody.speedrange}
 	result := initializers.DB.Create(&car) // pass pointer of data to Create in the actual DB
 	//handle database error
 	if result.Error != nil {
@@ -84,8 +120,6 @@ func CarGetterByFilter(c *gin.Context) {
 	Make := c.Query("make")
 	Model := c.Query("model")
 	SpeedR := c.Query("speedrange")
-
-	//converting string to int
 
 	//var cars to store found cars
 	var cars []models.Car
