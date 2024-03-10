@@ -21,7 +21,9 @@ GoDotEnv which loads env vars from a .env file go get github.com/joho/godotenv t
 https://go.dev/doc/install
 
 # clone this repository 
-git clone thisRepo
+git clone thisRepo <br>
+before running the main.go make sure to naviagte to migrate folder and run the folder migrate.go through the terminal using command go run migrate.go
+
 
 # Navigate into the downloaded folder and start the project
 go run main.go <br>
