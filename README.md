@@ -22,7 +22,7 @@ https://go.dev/doc/install
 
 # clone this repository 
 git clone [thisRepo](https://github.com/NourhanAhmed1/GoAPI.git) <br>
-before running the main.go make sure to naviagte to migrate folder and run the folder migrate.go through the terminal using command go run migrate.go
+
 
 
 # Navigate into the downloaded folder and start the project
