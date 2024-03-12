@@ -1,5 +1,5 @@
 # GoAPI
-Beginners CRUD API to create, read, update and delete users based ON GoLang with ElephantSQL GORM and Gin Web Framework. ElephantSQL is a PostgreSQL database hosting service, Gorm Is ORM library for GOLANG and GIN The fastest full-featured web framework for Go.
+CRUD API to create, read, update and delete users based ON GoLang with ElephantSQL GORM and Gin Web Framework. ElephantSQL is a PostgreSQL database hosting service, Gorm Is ORM library for GOLANG and GIN The fastest full-featured web framework for Go.
 
 # Routes
 Show all cars - GET - /car <br>
